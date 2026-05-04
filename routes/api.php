@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Comment\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Posts\PublicPostController;
 use App\Http\Controllers\Posts\AdminPostController;
@@ -22,4 +23,11 @@ Route::prefix('admin')->middleware('adminAuthorization')->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+});
+
+Route::prefix('comments')->middleware('jwt')->group(function () {
+    Route::get('/{postId}', [CommentController::class, 'index'])->name('comments.index');
+    Route::post('create/{postId}', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('/{commentId}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/{commentId}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
