@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminAuthorization;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'jwt' => JwtMiddleware::class,
+            'adminAuthorization' => AdminAuthorization::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

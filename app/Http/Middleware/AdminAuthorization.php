@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Helpers\JwtHelper;
 use App\Models\User;
 
-class JwtMiddleware
+class AdminAuthorization
 {
     /**
      * Handle an incoming request.
@@ -34,6 +34,9 @@ class JwtMiddleware
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 401);
+        }
+        if ($user->type != UserType::ADMIN) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
         // Set authenticated user manually

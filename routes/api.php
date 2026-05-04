@@ -12,7 +12,7 @@ Route::prefix('posts')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin')->middleware('jwt')->group(function () {
+Route::prefix('admin')->middleware('adminAuthorization')->group(function () {
     Route::get('/posts', [AdminPostController::class, 'index'])->name('admin.posts.index');
     Route::post('/posts', [AdminPostController::class, 'store'])->name('admin.posts.store');
     Route::put('/posts/{id}', [AdminPostController::class, 'update'])->name('admin.posts.update');
