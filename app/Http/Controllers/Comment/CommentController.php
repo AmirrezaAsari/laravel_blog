@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Comment;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessComments;
+use App\Jobs\UpdateCommentsJob;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use App\Jobs\StoreCommentsJob;
 
 class CommentController extends Controller
 {
@@ -27,13 +29,12 @@ class CommentController extends Controller
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-
-        $comment = Comment::create([
+        $data = [
             'post_id' => $post_id,
             'comment' => $validated['comment'],
             'author_id' => Auth::id(),
-        ]);
-        ProcessComments::dispatch($comment)
+        ]
+        $comment = StoreCommentsJob::dispatch($data);
         return response()->json(['message' => 'Comment created'], 201);
     }
 
@@ -52,8 +53,7 @@ class CommentController extends Controller
             return response()->json(['message' => 'Comment not found'], 404);
         }
 
-        $comment->update($validated);
-        ProcessComments::dispatch($comment);
+        UpdateCommentsJob::dispatch($validated);
         return response()->json(['message' => 'Comment updated'], 200);
     }
 }
