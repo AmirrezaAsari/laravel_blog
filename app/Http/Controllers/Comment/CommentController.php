@@ -23,6 +23,7 @@ class CommentController extends Controller
     {
         $validated = $request->validate([
             'comment' => 'required',
+            'parent_id' => 'nullable|exists:comments,id|integer',
         ]);
 
         $post = Post::find($post_id);
@@ -33,9 +34,10 @@ class CommentController extends Controller
             'post_id' => $post_id,
             'comment' => $validated['comment'],
             'author_id' => Auth::id(),
+            'parent_id' => $validated['parent_id'],
         ];
         $comment = StoreCommentsJob::dispatch($data);
-        return response()->json(['message' => 'Comment created'], 201);
+        return response()->json(['message' => 'Comment created', 'data'=> $comment], 201);
     }
 
 
