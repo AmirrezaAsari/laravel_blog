@@ -10,6 +10,8 @@ use App\Http\Controllers\Posts\AdminPostController;
 Route::prefix('posts')->group(function () {
     Route::get('/', [PublicPostController::class, 'index'])->name('posts.index');
     Route::get('/{slug}', [PublicPostController::class, 'show'])->name('posts.show');
+    Route::post('/upvote', [PublicPostController::class, 'upvote'])->name('posts.upvote');
+    Route::post('/downvote', [PublicPostController::class, 'downvote'])->name('posts.downvote');
 });
 
 // Admin routes
