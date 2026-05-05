@@ -33,7 +33,7 @@ class CommentController extends Controller
             'post_id' => $post_id,
             'comment' => $validated['comment'],
             'author_id' => Auth::id(),
-        ]
+        ];
         $comment = StoreCommentsJob::dispatch($data);
         return response()->json(['message' => 'Comment created'], 201);
     }
